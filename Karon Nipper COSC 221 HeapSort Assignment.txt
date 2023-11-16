@@ -1,6 +1,6 @@
 ﻿package heapsort_assignment;
 
-
+//main class
 import java.util.*;
 public class main {
  static Scanner sc = new Scanner(System.in);
@@ -33,6 +33,7 @@ public class main {
                 System.out.println("\nKaron Nipper \nDone");
         }
 }
+//maxheap class
 import java.util.*;
 public class MaxHeap {
         static Scanner sc = new Scanner(System.in);
@@ -167,6 +168,7 @@ public class MaxHeap {
                 return s;
         }
 }
+//minheap
 import java.util.*;
 public class MinHeap {
         static Scanner sc = new Scanner(System.in);
