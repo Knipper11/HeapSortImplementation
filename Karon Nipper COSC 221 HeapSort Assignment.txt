@@ -1,0 +1,297 @@
+﻿package heapsort_assignment;
+
+
+import java.util.*;
+public class main {
+ static Scanner sc = new Scanner(System.in);
+        public static void main(String[] args) {
+                // TODO Auto-generated method stub
+                int array[] = {23, 30, 14, 41, 12, 11};
+                int array2[] = {22, 100, 45, 0, 15, 11};
+                MaxHeap mc = new MaxHeap();
+                MinHeap mh = new MinHeap();
+                System.out.format("Original array: %s\n", Arrays.toString(array2));
+                
+                System.out.println("Would you like your heap to be max or min?");
+                String ans = sc.next();
+                if(ans.contentEquals("Max") || ans.contentEquals("max")) {
+                        //creating a max heap array
+                        mc.MaxHeapSort(array2);
+                        //adding element to array, then sifting array up, so array will be maxheap
+                        mc.siftUp(array2);
+                        //removing element from array, then sifting array down, so array will be maxheap
+                        mc.siftDown(array2);
+                }
+                if(ans.contentEquals("Min") || ans.contentEquals("min")) {
+                        //creating a min heap array
+                mh.MinHeapSort(array2);
+                //adding element to array, then sifting array up, so array will be minheap
+                mh.siftUp(array2);
+                //removing element from array, then sifting array down, so array will be minheap
+                mh.siftDown(array2);
+                }
+                System.out.println("\nKaron Nipper \nDone");
+        }
+}
+import java.util.*;
+public class MaxHeap {
+        static Scanner sc = new Scanner(System.in);
+        private static List<Integer> list = new ArrayList<Integer>();
+        public MaxHeap() {}
+        public static void MaxHeapSort(int a[]) {
+                int temp, maxIdx;
+                int counter = 0;
+                int index = 0, rightChild, leftChild;
+                int size = a.length;
+                int array[] = new int[a.length];
+                for(int i = 0; i < a.length; i++) {
+                        array[i] = a[i];
+                }
+                while(counter < 2) {
+                        while(2 * index + 1 < size) {
+                                rightChild = 2*(index) + 2;
+                                leftChild = 2*(index) + 1;
+                                maxIdx= leftChild;
+
+
+                                if( rightChild < size && a[rightChild] > a[leftChild]) {
+                                        maxIdx = rightChild;
+                                }
+                                //comparing bigger child with parent
+                                //if child is bigger than parent, then swap
+                                if(a[maxIdx] > a[index]) {
+                                        temp = a[index];
+                                        a[index] = a[maxIdx];
+                                        a[maxIdx] = temp;
+                                }
+                                index++;
+                                // System.out.format("Max Heap array: %s\n", Arrays.toString(a));
+                        }
+                        if(counter < 2) {
+                                index = 0;
+                                counter++;
+                        }
+                }
+                System.out.format("Max Heap array: %s\n\n", Arrays.toString(a));
+        }
+        public static int[] siftUp(int a[]) {
+                int new_size = a.length + 1;
+                int array[] = new int[new_size];
+                int num;
+                int temp;
+                for(int i = 0; i < a.length; i++) {
+                        array[i] = a[i];
+                }
+                System.out.print("What number would you like to add: ");
+                num = sc.nextInt();
+                array[new_size-1] = num;
+                //adding element to array
+                System.out.format("\nNew array: %s\n\n", Arrays.toString(array));
+
+
+                int c = (new_size - 1); //c = child
+                int p = ((new_size - 1) - 1)/ 2; // p = parent
+
+
+                for(int i = new_size; i >= 0; i--) {
+                        //comparing child with parent
+                        //if child is bigger than parent, then swap
+                        if(array[p] < array[c]) {
+                                temp = array[p];
+                                array[p] = array[c];
+                                array[c] = temp;
+                                c = p;
+                                p = (c - 1)/ 2;
+                                //System.out.format("SiftUp array: %s\n", Arrays.toString(array));
+                        }
+                }
+                System.out.format("SiftUp array: %s\n\n", Arrays.toString(array));
+                return array;
+        }
+        public static void siftDown(int a[]) {
+                int size = a.length - 2;
+                int temp, temp1, maxIdx,index1 = 0, index = 0;
+                int rightChild, leftChild;
+
+
+                list = new ArrayList<Integer>();
+
+
+                for(int i = 0; i < a.length; i++) {
+                        list.add(a[i]);
+                }
+                while(list.size() > 0)  {
+                //deleting first element of array and replacing it with last element in array
+                        temp = list.get(list.size() - 1);
+                        list.add(0, temp);
+                        list.remove(1);
+                        list.remove(list.size() - 1);
+                        int a2[] = new int[list.size()];
+                        for(int i = 0; i < list.size(); i++) {
+                                a2[i] = list.get(i);
+                        }
+                        
+                        while(2 * index + 1 < size) {
+                                rightChild = 2*(index) + 2;
+                                leftChild = 2*(index) + 1;
+                                maxIdx = leftChild;
+                                //comparing bigger child with parent
+                                //if child is bigger than parent, then swap
+                                if(rightChild < size && a2[rightChild] > a2[leftChild]) {
+                                        maxIdx = rightChild;
+                                }
+                                if(a2[maxIdx] > a2[index]) {
+                                        temp1 = a2[index];
+                                        a2[index] = a2[maxIdx];
+                                        a2[maxIdx] = temp1;
+                                }
+                                index++;
+                        }
+                        //System.out.format("SiftDown array: %s\n", Arrays.toString(a2));
+                        size--;
+                }
+                if(list.size() != 0) {
+                        int a2[] = Arrays.copyOf(a, list.size());
+                        for(int i = 0; i < a2.length; i++) {
+                                list.add(a2[i]);
+                        }
+                }
+                list.toString();
+                System.out.format("SiftDown array: %s\n", list.toString());
+        }
+        public String toString() {
+
+
+                String s = new String();
+                s+= "SiftDown Array = " + list.toString();
+                return s;
+        }
+}
+import java.util.*;
+public class MinHeap {
+        static Scanner sc = new Scanner(System.in);
+        private static List<Integer> list = new ArrayList<Integer>();
+        public MinHeap() {}
+        public static void MinHeapSort(int a[]) {
+                int temp, minIdx;;
+                int index = 0, rightChild, leftChild;
+                int size = a.length;
+                int counter = 0;
+                while(counter < 2) {
+                        while(2 * index + 1 < size) {
+                                rightChild = 2*(index) + 2;
+                                leftChild = 2*(index) + 1;
+                                minIdx= leftChild;
+
+
+                                if( rightChild < size && a[rightChild] < a[leftChild]) {
+                                        minIdx = rightChild;
+                                }
+                                //comparing smaller child with parent
+                                //if child is smaller than parent, then swap
+                                if(a[minIdx] < a[index]) {
+                                        temp = a[index];
+                                        a[index] = a[minIdx];
+                                        a[minIdx] = temp;
+                                }
+                                index++;
+                                //System.out.format("Min Heap array: %s\n", Arrays.toString(a));
+                        }
+                        if(counter < 2) {
+                                index = 0;
+                                counter++;
+                        }
+                }
+                System.out.format("Min Heap array: %s\n", Arrays.toString(a));
+        }
+        public static int[] siftUp(int a[]) {
+                int new_size = a.length + 1;
+                int array[] = new int[new_size];
+                int num;
+                int temp;
+                for(int i = 0; i < a.length; i++) {
+                        array[i] = a[i];
+                }
+                System.out.print("What number would you like to add: ");
+                num = sc.nextInt();
+                array[new_size-1] = num;
+                //adding element to array
+                System.out.format("\nNew array: %s\n\n", Arrays.toString(array));
+
+
+                int c = (new_size - 1); //c = child
+                int p = ((new_size - 1) - 1)/ 2; // p = parent
+
+
+                for(int i = new_size; i >= 0; i--) {
+                        //comparing child with parent
+                        //if child is bigger than parent, then swap
+                        if(array[p] > array[c]) {
+                                temp = array[p];
+                                array[p] = array[c];
+                                array[c] = temp;
+                                c = p;
+                                p = (c - 1)/ 2;
+                                //System.out.format("SiftUp array: %s\n", Arrays.toString(array));
+                        }
+                }
+                System.out.format("SiftUp array: %s\n\n", Arrays.toString(array));
+                return array;
+        }
+        public static void siftDown(int a[]) {
+                int size = a.length - 2;
+                int temp, temp1, maxIdx,index1 = 0, index = 0;
+                int rightChild, leftChild;
+
+
+                list = new ArrayList<Integer>();
+
+
+                for(int i = 0; i < a.length; i++) {
+                        list.add(a[i]);
+                }
+                while(list.size() > 0)  {
+//deleting first element of array and replacing it with last element in array
+                        temp = list.get(list.size() - 1);
+                        list.add(0, temp);
+                        list.remove(1);
+                        list.remove(list.size() - 1); 
+                        int a2[] = new int[list.size()];
+                        for(int i = 0; i < list.size(); i++) {
+                                a2[i] = list.get(i);
+                        }
+                        while(2 * index + 1 < size) {
+                                rightChild = 2*(index) + 2;
+                                leftChild = 2*(index) + 1;
+                                maxIdx = leftChild;
+
+
+                                if(rightChild < size && a2[rightChild] > a2[leftChild]) {
+                                        maxIdx = rightChild;
+                                }
+                                //comparing smaller child with parent
+                                //if child is smaller than parent, then swap
+                                if(a2[maxIdx] > a2[index]) {
+                                        temp1 = a2[index];
+                                        a2[index] = a2[maxIdx];
+                                        a2[maxIdx] = temp1;
+                                }
+                                index++;
+                        }
+                        //System.out.format("SiftDown array: %s\n\n", Arrays.toString(a2));
+                        size--;
+                }
+                if(list.size() != 0) {
+                        int a2[] = Arrays.copyOf(a, list.size());
+                        for(int i = 0; i < a2.length; i++) {
+                                list.add(a2[i]);
+                        }
+                }
+                System.out.format("SiftDown array: %s\n\n", list.toString());
+        }
+        public String toString() {
+                String s = new String();
+                s+= list.toString();
+                return s;
+        }
+}
